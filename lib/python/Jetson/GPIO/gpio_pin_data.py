@@ -239,7 +239,7 @@ def get_data():
     '''
     model = JETSON_NANO
     msg = """\
-WARNING: Hard coded Jetson Nano r200.
+WARNING: Hard coded to use board Jetson Nano r200.
 WARNNIG: Make sure this is the board you are using
 WARNING: Otherwise it is unlikely to work correctly.
 """
