@@ -1,3 +1,11 @@
+# Fork of Jetson.GPIO - Linux for Tegra specifically for Jetson Nano, r200
+in order for the library not to access /proc/device-tree/compatible, and therefore
+to be used in a non-privileged Docker container, this fork patches lib/python/Jetson/GPIO/gpio_pin_data.py
+such that it hard-codes the use of Jetson Nano (module-id: 3448-0000-200)
+can be pip installed by using:
+pip install git+https://github.com/Heerpa/jetson-gpio/jetson-gpio.git
+
+
 # Jetson.GPIO - Linux for Tegra
 
 Jetson TX1, TX2, AGX Xavier, and Nano development boards contain a 40 pin GPIO
