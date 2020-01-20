@@ -3,7 +3,8 @@ in order for the library not to access /proc/device-tree/compatible, and therefo
 to be used in a non-privileged Docker container, this fork patches lib/python/Jetson/GPIO/gpio_pin_data.py
 such that it hard-codes the use of Jetson Nano (module-id: 3448-0000-200)
 can be pip installed by using:
-pip install git+https://github.com/Heerpa/jetson-gpio/jetson-gpio.git
+
+pip install git+https://github.com/Heerpa/jetson-gpio
 
 
 # Jetson.GPIO - Linux for Tegra
