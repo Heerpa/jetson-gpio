@@ -235,62 +235,15 @@ ids_warned = False
 
 
 def get_data():
-    compatible_path = '/proc/device-tree/compatible'
-    ids_path = '/proc/device-tree/chosen/plugin-manager/ids'
-
-    with open(compatible_path, 'r') as f:
-        compatibles = f.read().split('\x00')
-
-    def matches(vals):
-        return any(v in compatibles for v in vals)
-
-    def find_pmgr_board(prefix):
-        global ids_warned
-        if not os.path.exists(ids_path):
-            if not ids_warned:
-                ids_warned = True
-                msg = """\
-WARNING: Plugin manager information missing from device tree.
-WARNING: Cannot determine whether the expected Jetson board is present.
+    '''This version hard-codes the Nvidia Jetson Nano, r200
+    '''
+    model = JETSON_NANO
+    msg = """\
+WARNING: Hard coded Jetson Nano r200.
+WARNNIG: Make sure this is the board you are using
+WARNING: Otherwise it is unlikely to work correctly.
 """
-                sys.stderr.write(msg)
-            return None
-        for f in os.listdir(ids_path):
-            if f.startswith(prefix):
-                return f
-        return None
-
-    def warn_if_not_carrier_board(carrier_board):
-        found = find_pmgr_board(carrier_board + '-')
-        if not found:
-            msg = """\
-WARNING: Carrier board is not from a Jetson Developer Kit.
-WARNNIG: Jetson.GPIO library has not been verified with this carrier board,
-WARNING: and in fact is unlikely to work correctly.
-"""
-            sys.stderr.write(msg)
-
-    if matches(compats_tx1):
-        model = JETSON_TX1
-        warn_if_not_carrier_board('2597')
-    elif matches(compats_tx2):
-        model = JETSON_TX2
-        warn_if_not_carrier_board('2597')
-    elif matches(compats_xavier):
-        model = JETSON_XAVIER
-        warn_if_not_carrier_board('2822')
-    elif matches(compats_nano):
-        model = JETSON_NANO
-        module_id = find_pmgr_board('3448')
-        if not module_id:
-            raise Exception('Could not determine Jetson Nano module revision')
-        revision = module_id.split('-')[-1]
-        # Revision is an ordered string, not a decimal integer
-        if revision < "200":
-            raise Exception('Jetson Nano module revision must be A02 or later')
-        warn_if_not_carrier_board('3449')
-    else:
-        raise Exception('Could not determine Jetson model')
+    sys.stderr.write(msg)
 
     pin_defs, jetson_info = jetson_gpio_data[model]
     gpio_chip_base = {}
